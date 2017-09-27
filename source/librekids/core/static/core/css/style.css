@@ -1,0 +1,25 @@
+/* *
+ * Core stylesheet
+ */
+ 
+ #lk-main-header > div,
+ #lk-user-panel > div
+ {
+ 	display: inline;
+ }
+ 
+ #lk-user-panel
+ {
+ 	float: right;
+ } 
+ 
+ #lk-breadcrumbs
+ {
+ 	font-size: small;
+ }
+ 
+ #lk-content > div
+ {
+ 	display: inline-grid;
+ }
+ 

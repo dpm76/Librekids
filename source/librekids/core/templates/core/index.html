@@ -1,6 +1,65 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block head-styles %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static 'core/css/style.css' %}" />
+{% endblock %}
+	
+{% block head-scripts %}
+	{{ block.super }}
+{% endblock %}
+
+{% block body-header %}
+	<div id="lk-main-header">
+		<div id="lk-main-menu">		
+			<span>Home</span>
+			<span>Kids</span>		
+			<span>Kindergarten</span>
+			<span>Portfolios</span>
+			<span>Messages</span>
+			<span>Projects</span>		
+			<span>Equipment</span>
+		</div>
+		<div id="lk-user-panel">
+			<div id="lk-user-notifications">	
+				<span id="lk-message-notifier">Mensajes (*)</span>
+				<span id="lk-activity-stream-notifier">Activities (-)</span>
+			</div>		
+			<div id="lk-user-menu">
+				<img href="" alt="user image" />
+				<ul>
+					<li>Profile</li>		
+					<li>My kids</li>
+					<li>My portfolios</li>
+					<li>My classrrom</li>
+					<li>My messages</li>		
+					<li>About</li>
+					<li>Logout</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="lk-breadcrumbs">home > Pepito Pérez > portfolio </div>
+{% endblock %}
+
 {% block body-content %}
-<h1>Index</h1>
-<p>Este es el contenido.</p>
+	<div id="lk-content">
+		<div id="lk-context-panel">
+			<h3>Context panel</h3>
+			<ul>
+				<li>see portfolio</li>
+				<li>new report</li>		
+				<li>send message to fathers</li>
+				<li>see authorized persons</li>
+				<li>new authorized person</li>
+			</ul>
+		</div>
+		<div id="lk-content">Content</div>
+	</div>
+{% endblock %}
+
+{% block body-footer %}
+	{{ block.super }}
 {% endblock %}

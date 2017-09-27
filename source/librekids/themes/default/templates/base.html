@@ -1,0 +1,33 @@
+{% load static %}
+
+<html>
+<head>
+	<title>LibreKIDS</title>
+	<meta charset="UTF-8">	
+	<meta name="description" content="Kindergarten Information and Data System">
+	{% block head-styles %}		
+		<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+	{% endblock %}
+	
+	{% block head-scripts %}		
+	{% endblock %}
+</head>
+<body>
+	<header id="lk-body-header">{% block body-header %}{% endblock %}</header>
+	<div id="lk-body-content">
+		{% block body-content %}{% endblock %}
+	</div>
+	<footer id="lk-body-footer">
+		{% block body-footer %}			
+		{% endblock %}
+		<div id="lk-body-footer-system-info">
+			<span id="lk-body-footer-system-info-version">
+				LibreKIDS - version {{ version }}{% if is_dev %}+{% endif %}
+			</span>
+			<span id="lk-body-footer-system-info-get-it">
+				<a href="https://github.com/dpm76/Librekids">Get on Github</a>
+			</span>
+		</div>		
+	</footer>
+</body>
+</html>

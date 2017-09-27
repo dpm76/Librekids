@@ -1,0 +1,25 @@
+/**
+ * Generic style
+ */
+
+body 
+{
+  font-family: Arial, Helvetica, Verdana, sans-serif;
+}
+
+#lk-body-footer-system-info
+{
+	border-style: solid;
+	border-width: 1px 0 0 0;
+	border-color: #555753;
+}
+
+#lk-body-footer-system-info > span
+{	
+	font-size: small;
+}
+
+#lk-body-footer-system-info-get-it
+{
+	float: right;
+}
