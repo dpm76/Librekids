@@ -4,7 +4,7 @@
 
 {% block head-styles %}
 	{{ block.super }}
-	<link rel="stylesheet" type="text/css" href="{% static 'core/css/style.css' %}" />
+	<!-- link rel="stylesheet" type="text/css" href="{% static 'core/css/style.css' %}" / -->
 {% endblock %}
 	
 {% block head-scripts %}
@@ -12,52 +12,91 @@
 {% endblock %}
 
 {% block body-header %}
-	<div id="lk-main-header">
-		<div id="lk-main-menu">		
-			<span>Home</span>
-			<span>Kids</span>		
-			<span>Kindergarten</span>
-			<span>Portfolios</span>
-			<span>Messages</span>
-			<span>Projects</span>		
-			<span>Equipment</span>
-		</div>
-		<div id="lk-user-panel">
-			<div id="lk-user-notifications">	
-				<span id="lk-message-notifier">Mensajes (*)</span>
-				<span id="lk-activity-stream-notifier">Activities (-)</span>
-			</div>		
-			<div id="lk-user-menu">
-				<img href="" alt="user image" />
-				<ul>
-					<li>Profile</li>		
-					<li>My kids</li>
-					<li>My portfolios</li>
-					<li>My classrrom</li>
-					<li>My messages</li>		
-					<li>About</li>
-					<li>Logout</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div id="lk-breadcrumbs">home > Pepito Pérez > portfolio </div>
+	{{ block.super }}
 {% endblock %}
 
 {% block body-content %}
-	<div id="lk-content">
-		<div id="lk-context-panel">
-			<h3>Context panel</h3>
-			<ul>
-				<li>see portfolio</li>
-				<li>new report</li>		
-				<li>send message to fathers</li>
-				<li>see authorized persons</li>
-				<li>new authorized person</li>
-			</ul>
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+  <div class="w3-container">
+    <a href="#" onclick="w3_close()" class="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-grey" title="close menu">
+      <i class="fa fa-remove"></i>
+    </a>
+    <img src="/w3images/avatar_g2.jpg" style="width:45%;" class="w3-round"><br><br>
+    <h4><b>{{ context_panel.label }}</b></h4>    
+  </div>
+  <div class="w3-bar-block">
+  	{% if context_panel %}
+		{% for menu_item in context_panel.context_menu %}
+			<a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><!-- w3-text-teal -->
+				{{ menu_item.label }}
+			</a>			
+		{% endfor %}
+	{% endif %}
+  </div>  
+</nav>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px">
+  <!-- Header -->
+  <header id="portfolio">    
+    <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></span>
+    <div class="w3-container">
+    	{% if user_notifications %}
+			<div id="lk-user-notifications" class="w3-bar-block w3-right">
+				{% for notifier in user_notifications %}
+					<span class="lk-user-notifier" id="lk-{{ notifier.name }}-notifier">
+						{{ notifier.label }} 
+						({% if notifier.status_type == "integer" %}
+						{{ notifier.status_value }}
+						{% else %}
+							{% if notifier.status_value == "true" %}
+								*
+							{% else %}
+								-
+							{% endif %}
+						{% endif %})
+					</span>
+				{% endfor %}
+			</div>
+		{% endif %}
+        
+	    <div class="w3-section w3-bottombar w3-padding-16">
+	    	{% for menu_item in main_menu %}
+				<button class="w3-button w3-white w3-hide-small">{{ menu_item.label }}</button>
+			{% endfor %}
+			
+			<div id="lk-user-menu" class="w3-bar-block w3-right">  	
+				{% if user_data %}
+					{# <img href="" alt="user image" /> #}
+					<i class="fa fa-user fa-fw w3-margin-right"></i>
+					<span>{{ user_data.label }}</span>
+				{% endif %}
+				<ul style="display: none">
+					{% for menu_item in user_menu %}
+						<li>{{ menu_item.label }}</li>
+					{% endfor %}					
+				</ul>
+		    </div>
+    	</div>
+    </div>
+    {% if breadcrumbs %}		
+		<div id="lk-breadcrumbs">
+			<span>{{ breadcrumbs.0.label }}</span>		
+			{% for breadcrum in breadcrumbs|slice:"1:" %}
+				> <span>{{ breadcrum.label }}</span>
+			{% endfor %}
 		</div>
-		<div id="lk-content">Content</div>
-	</div>
+	{% endif %}
+  </header>
+  
+  <div style="min-height: 400px"> 
+  	<!-- actual content goes here -->  	
+  	<h1>Content</h1>  	
+  </div>
 {% endblock %}
 
 {% block body-footer %}
