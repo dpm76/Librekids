@@ -16,10 +16,12 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from librekids.core.views import IndexView
 
 urlpatterns = [
+    url(r'^$', IndexView.as_view(), name='index'),
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('librekids.core.urls')),
+    url(r'^core/', include('librekids.core.urls')),
     url(r'^messaging/', include('librekids.messaging.urls')),
     url(r'^portfolio/', include('librekids.portfolio.urls')),
 ]

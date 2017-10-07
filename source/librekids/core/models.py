@@ -48,6 +48,14 @@ class AuthorisedPerson(models.Model):
     mobile_number = models.CharField(validators=[PhoneValidator.getInstance()], 
                                      max_length=15, blank=True)
     email = models.EmailField(blank=True)
+    
+    
+    def __str__(self):
+        '''
+        Simple serialization
+        '''
+        
+        return self.name
 
 
 
@@ -57,7 +65,7 @@ class Parent(AuthorisedPerson):
     '''
     
     pass
-
+    
 
 class Employee(models.Model):
     '''
@@ -66,12 +74,19 @@ class Employee(models.Model):
     
     name=models.CharField(max_length=50)
     position = models.CharField(max_length=50, blank=True)
-    supervisor = models.ForeignKey('self', null=True, related_name="supervisor_of")
+    supervisor = models.ForeignKey('self', null=True, blank=True, related_name="supervisor_of")
     phone_number = models.CharField(validators=[PhoneValidator.getInstance()], 
                                     max_length=15, blank=True)
     mobile_number = models.CharField(validators=[PhoneValidator.getInstance()], 
                                      max_length=15, blank=True)
     email = models.EmailField(blank=True)
+    
+    def __str__(self):
+        '''
+        Simple serialization
+        '''
+        
+        return self.name
 
 
 class Company(models.Model):
@@ -80,8 +95,16 @@ class Company(models.Model):
     '''
     
     name = models.CharField(max_length=50, blank=False)
-    address = models.TextField()
-    owner = models.ForeignKey(Employee)
+    address = models.TextField(blank=True)
+    owner = models.ForeignKey(Employee, null=True, blank=True)
+    
+
+    def __str__(self):
+        '''
+        Simple serialization
+        '''
+        
+        return self.name
     
 
 class Kindergarten(models.Model):
@@ -89,12 +112,21 @@ class Kindergarten(models.Model):
     Kindergarten
     '''
     
-    address = models.TextField()
+    address = models.TextField(blank=True)
     phone_number = models.CharField(validators=[PhoneValidator.getInstance()], 
                                     max_length=15, blank=True)
     name = models.CharField(max_length=50, blank=False)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    director = models.ForeignKey(Employee)    
+    company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
+    director = models.ForeignKey(Employee, null=True, blank=True)    
+
+
+    def __str__(self):
+        '''
+        Simple serialization
+        '''
+        
+        return self.name
+
     
     
 class Classroom(models.Model):
@@ -104,6 +136,15 @@ class Classroom(models.Model):
     
     name = models.CharField(max_length=50, blank=False)
     kindergarten = models.ForeignKey(Kindergarten, on_delete=models.CASCADE)
+    
+    
+    def __str__(self):
+        '''
+        Simple serialization
+        '''
+        
+        return self.name
+
 
 
 class Educator(Employee):
@@ -120,8 +161,17 @@ class Child(models.Model):
     '''
     
     name=models.CharField(max_length=50, blank=False)
-    educator = models.ForeignKey(Educator, null=True, on_delete=models.SET_NULL)
+    educator = models.ForeignKey(Educator, null=True, blank=True, on_delete=models.SET_NULL)
     parents = models.ManyToManyField(Parent)
+    
+    
+    def __str__(self):
+        '''
+        Simple serialization
+        '''
+        
+        return self.name
+
     
     
 class ChildAuthorisation(models.Model):
@@ -134,8 +184,8 @@ class ChildAuthorisation(models.Model):
     is_active = models.BooleanField()
     #Depending this field the authorisation will be time enclosed or not.
     is_enclosed = models.BooleanField()    
-    date_start = models.DateField(null=True)
-    date_end = models.DateField(null=True)
+    date_start = models.DateField(null=True, blank=False)
+    date_end = models.DateField(null=True, blank=False)
 
 
 class ActivityStreamEntry(models.Model):
@@ -144,13 +194,13 @@ class ActivityStreamEntry(models.Model):
     '''
     
     actor = models.ForeignKey(User)
-    object_type = models.ForeignKey(ContentType, null=False, on_delete=models.CASCADE, 
+    object_type = models.ForeignKey(ContentType, null=False, blank=False, on_delete=models.CASCADE, 
                                     related_name="activity_stream_entry_as_object_type")
     object_id = models.PositiveIntegerField()
     object = GenericForeignKey('object_type', 'object_id')
-    target_type = models.ForeignKey(ContentType, null=True, on_delete=models.SET_NULL,
+    target_type = models.ForeignKey(ContentType, null=True, blank=True, on_delete=models.SET_NULL,
                                     related_name="activity_stream_entry_as_target_type")
-    target_id = models.PositiveIntegerField()
+    target_id = models.PositiveIntegerField(null=True, blank=False)
     target = GenericForeignKey('target_type', 'target_id')
     verb = models.CharField(max_length=50, blank=False)
     time_stamp = models.DateTimeField(blank=False)
@@ -174,13 +224,22 @@ class DataArea(models.Model):
     users = models.ManyToManyField(User)
     
 
+    def __str__(self):
+        '''
+        Simple serialization
+        '''
+        
+        return self.name
+
+    
+
 class DataIntoAreaRelation(models.Model):
     '''
     Relation between data-area and data 
     '''
     
     data_area = models.ForeignKey(DataArea, on_delete=models.CASCADE)
-    data_type = models.ForeignKey(ContentType, null=True, on_delete=models.CASCADE)
+    data_type = models.ForeignKey(ContentType, null=False, blank=False, on_delete=models.CASCADE)
     data_id = models.PositiveIntegerField()
     data = GenericForeignKey('data_type', 'data_id')
 

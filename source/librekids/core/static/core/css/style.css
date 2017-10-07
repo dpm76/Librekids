@@ -2,6 +2,84 @@
  * Core stylesheet
  */
 
+a.lk-user-notifier-icon
+{
+	text-decoration: none;
+}
+
+a.lk-user-notifier-icon:before
+{
+	font-family: FontAwesome;
+	margin-right: 4px;
+}
+
+#lk-messages-notifier > a.lk-user-notifier-icon:before
+{
+    content: "\f0e0";
+}
+
+#lk-activity-stream-notifier > a.lk-user-notifier-icon:before
+{
+    content: "\f10c";
+}
+
+#lk-custom-notifier > a.lk-user-notifier-icon:before
+{
+    content: "\f128";
+}
+
+#lk-main-menu > div.lk-button > span > span.lk-main-menu-item-icon:before
+{
+	font-family: FontAwesome;
+}
+
+#lk-main-menu > div.lk-button#lk-main-menu-item-home > span > span.lk-main-menu-item-icon:before
+{
+	content: "\f015";
+}
+
+#lk-main-menu > div.lk-button#lk-main-menu-item-children > span > span.lk-main-menu-item-icon:before
+{
+	content: "\f2c2";
+}
+
+#lk-main-menu > div.lk-button#lk-main-menu-item-kindergarten > span > span.lk-main-menu-item-icon:before
+{
+	content: "\f19c";
+}
+
+#lk-main-menu > div.lk-button#lk-main-menu-item-portfolios > span > span.lk-main-menu-item-icon:before
+{
+	content: "\f07c";
+}
+
+#lk-main-menu > div.lk-button#lk-main-menu-item-messages > span > span.lk-main-menu-item-icon:before
+{
+	content: "\f0e0";
+}
+
+#lk-main-menu > div.lk-button#lk-main-menu-item-projects > span > span.lk-main-menu-item-icon:before
+{
+	content: "\f0ae";
+}
+
+#lk-main-menu > div.lk-button#lk-main-menu-item-equipment > span > span.lk-main-menu-item-icon:before
+{
+	content: "\f1b3";
+}
+
+.lk-main-menu-submenu
+{
+	display: none;
+	position: absolute;	
+}
+
+.lk-main-menu-item-more
+{
+	width: 24px;
+	height: 24px;
+}
+
 /* 
  #lk-main-header > div,
  #lk-user-panel > div

@@ -4,11 +4,12 @@
 
 {% block head-styles %}
 	{{ block.super }}
-	<!-- link rel="stylesheet" type="text/css" href="{% static 'core/css/style.css' %}" / -->
+	<link rel="stylesheet" type="text/css" href="{% static 'core/css/style.css' %}" />
 {% endblock %}
 	
 {% block head-scripts %}
 	{{ block.super }}
+	<script src="{% static 'core/js/main.js' %}"></script>
 {% endblock %}
 
 {% block body-header %}
@@ -17,9 +18,9 @@
 
 {% block body-content %}
 <!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+<nav class="w3-sidebar w3-collapse w3-pale-yellow w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
   <div class="w3-container">
-    <a href="#" onclick="w3_close()" class="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-grey" title="close menu">
+    <a href="#" onclick="w3_close()" class="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-amber" title="close menu">
       <i class="fa fa-remove"></i>
     </a>
     <img src="/w3images/avatar_g2.jpg" style="width:45%;" class="w3-round"><br><br>
@@ -28,7 +29,7 @@
   <div class="w3-bar-block">
   	{% if context_panel %}
 		{% for menu_item in context_panel.context_menu %}
-			<a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-padding"><!-- w3-text-teal -->
+			<a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-hover-amber"><!-- w3-text-teal -->
 				{{ menu_item.label }}
 			</a>			
 		{% endfor %}
@@ -37,65 +38,101 @@
 </nav>
 
 <!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+<div class="w3-overlay w3-hide-large w3-animate-opacity" 
+	onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:300px">
   <!-- Header -->
-  <header id="portfolio">    
-    <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></span>
+  <header id="portfolio" class="">    
+    <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()">
+    	<i class="fa fa-bars"></i>
+	</span>
     <div class="w3-container">
-    	{% if user_notifications %}
-			<div id="lk-user-notifications" class="w3-bar-block w3-right">
-				{% for notifier in user_notifications %}
-					<span class="lk-user-notifier" id="lk-{{ notifier.name }}-notifier">
-						{{ notifier.label }} 
-						({% if notifier.status_type == "integer" %}
-						{{ notifier.status_value }}
-						{% else %}
-							{% if notifier.status_value == "true" %}
-								*
-							{% else %}
-								-
-							{% endif %}
-						{% endif %})
-					</span>
-				{% endfor %}
-			</div>
-		{% endif %}
+    	
+    	<div id="lk-user-menu" class="w3-margin-right w3-display-topright w3-text-red">  	
+			{% if user_data %}
+				{# <img href="" alt="user image" /> #}
+				<i class="fa fa-user fa-fw w3-margin-right-small"></i>
+				<span class="w3-small">{{ user_data.label }}</span>
+			{% endif %}
+			<ul style="display: none">
+				{% for menu_item in user_menu %}
+					<li>{{ menu_item.label }}</li>
+				{% endfor %}					
+			</ul>
+	    </div>
         
-	    <div class="w3-section w3-bottombar w3-padding-16">
+	    <div class="w3-margin-top-small">
+	    	<div id="lk-main-menu" class="lk-menu">
 	    	{% for menu_item in main_menu %}
-				<button class="w3-button w3-white w3-hide-small">{{ menu_item.label }}</button>
-			{% endfor %}
-			
-			<div id="lk-user-menu" class="w3-bar-block w3-right">  	
-				{% if user_data %}
-					{# <img href="" alt="user image" /> #}
-					<i class="fa fa-user fa-fw w3-margin-right"></i>
-					<span>{{ user_data.label }}</span>
-				{% endif %}
-				<ul style="display: none">
-					{% for menu_item in user_menu %}
-						<li>{{ menu_item.label }}</li>
-					{% endfor %}					
-				</ul>
+		    	<div id="lk-main-menu-item-{{ menu_item.name }}"
+		    		class="w3-button {{ menu_item.is_selected|yesno:'w3-red w3-text-amber,w3-amber w3-text-red' }}
+						 w3-hover-pale-yellow w3-margin-bottom-small
+						 lk-menu-item lk-button" data-name="{{ menu_item.name }}"
+						 data-target="{{ menu_item.target }}">
+					<span >
+						<span class="lk-main-menu-item-icon w3-medium"></span>
+						<span class="w3-hide-small">{{ menu_item.label }}</span>										
+					</span>				
+					{% if menu_item.menu %}
+						<span class="lk-main-menu-item-more" onclick="alert('pulsado');">
+							<i class="fa fa-caret-square-o-down fa-lg"></i>
+						</span>
+						<ul id="lk-main-menu-item-{{ menu_item.name }}-submenu"
+							class="lk-main-menu-submenu">
+						{% for submenu_item in menu_item.menu %}
+							<li 
+								id="lk-main-menu-item-{{ menu_item.name }}-{{ submenu_item.name }}"
+								class="lk-menu-item lk-main-menu-subitem" data-name="{{ submenu_item.name }}">
+								{{ submenu_item.label }}
+							</li>					
+						{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+			{% endfor %}			
 		    </div>
-    	</div>
+		    
+		    <div class="w3-topbar w3-border-red w3-small w3-text-red">
+			    {% if breadcrumbs %}		    	
+					<div id="lk-breadcrumbs" class="w3-left">
+						<span data-name="{{ breadcrumbs.0.label }}"><i class="fa fa-home"></i></span>		
+						{% for breadcrum in breadcrumbs|slice:"1:" %}
+							> <span>{{ breadcrum.label }}</span>
+						{% endfor %}
+					</div>
+				{% endif %}
+				
+				{% if user_notifications %}
+					<div id="lk-user-notifications" class="w3-bar-block w3-left w3-small w3-right">
+						{% for notifier in user_notifications %}
+							<span class="lk-user-notifier" id="lk-{{ notifier.name }}-notifier">
+								<a href="#" class="lk-user-notifier-icon w3-padding-small">
+									<span class="w3-hide-small">{{ notifier.label }}</span>
+								</a>						 
+								<span>({% if notifier.status_type == "integer" %}
+								{{ notifier.status_value }}
+								{% else %}
+									{% if notifier.status_value == "true" %}
+										*
+									{% else %}
+										-
+									{% endif %}
+								{% endif %})</span>
+							</span>
+							{% if notifier != user_notifications|last %}|{% endif %}
+						{% endfor %}
+					</div>
+				{% endif %}
+			</div>		    
+	    </div>
     </div>
-    {% if breadcrumbs %}		
-		<div id="lk-breadcrumbs">
-			<span>{{ breadcrumbs.0.label }}</span>		
-			{% for breadcrum in breadcrumbs|slice:"1:" %}
-				> <span>{{ breadcrum.label }}</span>
-			{% endfor %}
-		</div>
-	{% endif %}
+    
   </header>
   
-  <div style="min-height: 400px"> 
+  <div id="lk-main-panel" class="w3-container"> 
   	<!-- actual content goes here -->  	
-  	<h1>Content</h1>  	
   </div>
 {% endblock %}
 
