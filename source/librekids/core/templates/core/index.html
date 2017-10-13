@@ -70,7 +70,7 @@
 		    		class="w3-button {{ menu_item.is_selected|yesno:'w3-red w3-text-amber,w3-amber w3-text-red' }}
 						 w3-hover-pale-yellow w3-margin-bottom-small
 						 lk-menu-item lk-button" data-name="{{ menu_item.name }}"
-						 data-target="{{ menu_item.target }}">
+						 data-target="{{ menu_item.target | default_if_none:"" }}">
 					<span >
 						<span class="lk-main-menu-item-icon w3-medium"></span>
 						<span class="w3-hide-small">{{ menu_item.label }}</span>										

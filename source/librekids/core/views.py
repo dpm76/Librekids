@@ -4,7 +4,8 @@ from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 
 from librekids.core.models import Kindergarten
-from django.urls.base import reverse
+from librekids.core.navigation.module_manager import ModuleManager
+
 
 
 class IndexView(TemplateView):
@@ -13,21 +14,24 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
-        context["main_menu"] = [           
-            {"label": "Home", "name": "home", "is_selected": True},            
-            {"label": "Kindergarten", "name": "kindergarten",
-                "target": reverse("core:kindergarten"),
-                "menu": [
-                    {"label": "Classrooms", "name": "classroom"},
-                    {"label": "Children", "name": "children"},
-                    {"label": "Employees", "name": "employees"},
-                ]             
-            },
-            {"label": "Portfolios", "name": "portfolios"},
-            {"label": "Messages", "name": "messages"},
-            {"label": "Projects", "name": "projects"},
-            {"label": "Equipment", "name": "equipment"}, 
-        ]
+#         context["main_menu"] = [           
+#             {"label": "Home", "name": "home", "is_selected": True},            
+#             {"label": "Kindergarten", "name": "kindergarten",
+#                 "target": reverse("core:kindergarten"),
+#                 "menu": [
+#                     {"label": "Classrooms", "name": "classroom"},
+#                     {"label": "Children", "name": "children"},
+#                     {"label": "Employees", "name": "employees"},
+#                 ]             
+#             },
+#             {"label": "Portfolios", "name": "portfolios"},
+#             {"label": "Messages", "name": "messages"},
+#             {"label": "Projects", "name": "projects"},
+#             {"label": "Equipment", "name": "equipment"}, 
+#         ]
+                
+        context["main_menu"] = ModuleManager.getInstance().getMainMenuAsMap()
+        context["main_menu"][0]["is_selected"] = True 
                 
         context["user_menu"] = [
             {"label": "Profile"},
