@@ -71,24 +71,24 @@
 						 w3-hover-pale-yellow w3-margin-bottom-small
 						 lk-menu-item lk-button" data-name="{{ menu_item.name }}"
 						 data-target="{{ menu_item.target | default_if_none:"" }}">
-					<span >
+					<span>
 						<span class="lk-main-menu-item-icon w3-medium"></span>
 						<span class="w3-hide-small">{{ menu_item.label }}</span>										
 					</span>				
 					{% if menu_item.menu %}
-						<span class="lk-main-menu-item-more" onclick="alert('pulsado');">
+						<span class="lk-main-menu-item-more">
 							<i class="fa fa-caret-square-o-down fa-lg"></i>
+							<ul id="lk-main-menu-item-{{ menu_item.name }}-submenu"
+								class="lk-main-menu-submenu">
+							{% for submenu_item in menu_item.menu %}
+								<li 
+									id="lk-main-menu-item-{{ menu_item.name }}-{{ submenu_item.name }}"
+									class="lk-menu-item lk-main-menu-subitem" data-name="{{ submenu_item.name }}">
+									{{ submenu_item.label }}
+								</li>					
+							{% endfor %}
+							</ul>
 						</span>
-						<ul id="lk-main-menu-item-{{ menu_item.name }}-submenu"
-							class="lk-main-menu-submenu">
-						{% for submenu_item in menu_item.menu %}
-							<li 
-								id="lk-main-menu-item-{{ menu_item.name }}-{{ submenu_item.name }}"
-								class="lk-menu-item lk-main-menu-subitem" data-name="{{ submenu_item.name }}">
-								{{ submenu_item.label }}
-							</li>					
-						{% endfor %}
-						</ul>
 					{% endif %}
 				</div>
 			{% endfor %}			
