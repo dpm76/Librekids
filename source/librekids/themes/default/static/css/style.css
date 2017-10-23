@@ -9,6 +9,21 @@ body,h1,h2,h3,h4,h5,h6
 	font-family: "Raleway", sans-serif;
 }
 
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
+
+#lk-body-footer
+{
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	z-index: 4;
+}
+
 /*
 #lk-body-footer-system-info
 {

@@ -80,6 +80,33 @@ a.lk-user-notifier-icon:before
 	height: 24px;
 }
 
+#lk-main-menu > .lk-menu-item
+{
+	position: relative;
+	overflow: visible;
+}
+
+.lk-main-menu-submenu
+{
+	position: absolute;
+	bottom: 0px;
+	transform: translateY(100%);
+	right: 0px;
+	left: 0px;
+	z-index: 4;	 
+}
+
+.lk-main-menu-subitem
+{
+	display: block;	
+	text-align: left;	
+}
+
+.lk-main-menu-submenu > .lk-main-menu-subitem:not(:first-child)
+{
+	border-top: 1px solid;	
+}
+
 /* 
  #lk-main-header > div,
  #lk-user-panel > div

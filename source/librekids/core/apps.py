@@ -11,7 +11,9 @@ class CoreConfig(ModuleConfig):
     def getMainMenu():
         
         mainMenu = [
-            MenuItem("home").setLabel("Home"),
+            MenuItem("home")
+                .setLabel("Home")
+                .setTarget(reverse("core:home")),
             MenuItem("kindergarten")\
                 .setLabel("Kindergarten")\
                 .setTarget(reverse("core:kindergarten"))\

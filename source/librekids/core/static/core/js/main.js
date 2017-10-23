@@ -6,12 +6,42 @@ lk.core = {};
 /**
  * CSS classes used for selected menu items 
  */
-lk.core.selectedMenuItemClasses = "w3-red w3-text-amber";
+lk.core.selectedMenuItemClasses = "w3-indigo";
 
 /**
  * CSS classes used for not selected menu items 
  */
-lk.core.unselectedMenuItemClasses = "w3-amber w3-text-red";
+lk.core.unselectedMenuItemClasses = "w3-dark-marine";
+
+lk.core.loadView = function(viewName)
+{
+	/**
+	 * Loads a view into content area
+	 */
+	
+	//Select related menu item
+	$(".lk-menu .lk-menu-item[data-name !='" + viewName + "']")
+		.removeClass(lk.core.selectedMenuItemClasses)
+		.addClass(lk.core.unselectedMenuItemClasses);
+	
+	var menuItem = $(".lk-menu-item[data-name ='" + viewName + "']");
+
+	$(menuItem).addClass(lk.core.selectedMenuItemClasses);
+	$(menuItem).parents(".lk-menu-item").addClass(lk.core.selectedMenuItemClasses);
+				
+	//Load view target
+	var target = $(menuItem).attr("data-target");
+	
+	if(target)
+	{				
+		$.get(target, function(response) {
+			$("#lk-main-panel").html(response);					  
+		});
+	}else
+	{
+		$("#lk-main-panel").html("<h1>" + viewName + "</h1><p>Not yet implemented.</p>");
+	}
+}; 
 
 lk.core.init = function()
 {
@@ -23,28 +53,12 @@ lk.core.init = function()
 	$(".lk-menu .lk-menu-item").click(function()
 	{
 		/**
-		 * Init main menu buttons 
+		 * Opens the view related to the clicked menu item 
 		 */
 		
-		var menuItemName = $(this).attr("data-name");
+		var viewName = $(this).attr("data-name");
+		lk.core.loadView(viewName);
 		
-		$(".lk-menu .lk-menu-item[data-name !='" + menuItemName + "']")
-			.removeClass(lk.core.selectedMenuItemClasses)
-			.addClass(lk.core.unselectedMenuItemClasses);
-		
-		$(this).addClass(lk.core.selectedMenuItemClasses);
-					
-		var target = $(this).attr("data-target");
-		
-		if(target)
-		{				
-			$.get(target, function(response) {
-				$("#lk-main-panel").html(response);					  
-			});
-		}else
-		{
-			$("#lk-main-panel").html("<h1>" + menuItemName + "</h1>");
-		}
 	}).mouseenter(function()
 	{
 		$(this).siblings().children(".lk-main-menu-item-more").children(".lk-main-menu-submenu").hide();
@@ -72,10 +86,11 @@ lk.core.init = function()
 		$(this).hide();
 	});
 	
-	$(".lk-main-menu-submenu .lk-menu-item").click(function()
-	{
-		$(this).parents(".lk-menu-item").addClass(lk.core.selectedMenuItemClasses);
-	});
+	//Load current view
+	//TODO: 20171023 DPM - Temporally it get the first menu item, which should be the home view. 
+	//Later, it must be provided from the view controller, according to the session data. 
+	var viewName = $("#lk-main-menu > .lk-menu-item").first().attr("data-name");  
+	lk.core.loadView(viewName);	
 };
 
 //Start core module

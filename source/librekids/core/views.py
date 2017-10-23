@@ -87,6 +87,20 @@ class IndexView(TemplateView):
         return context
 
 
+class HomeView(TemplateView):
+    '''
+    Home view
+    '''
+
+    template_name = "core/home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+        
+        return context
+
+
+
 def login(request):
     '''
     Login view
