@@ -1,17 +1,19 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 
 from librekids.core.models import Kindergarten
+from librekids.core.navigation.menu_item import MenuItem
 from librekids.core.navigation.module_manager import ModuleManager
 
 
-
-class IndexView(TemplateView):
+class IndexView(LoginRequiredMixin, TemplateView):
 
     template_name = "core/index.html"
-
+    login_url = "/login/"
+    
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
 #         context["main_menu"] = [           
@@ -32,16 +34,28 @@ class IndexView(TemplateView):
                 
         context["main_menu"] = ModuleManager.getInstance().getMainMenuAsMap()
         context["main_menu"][0]["is_selected"] = True 
-                
-        context["user_menu"] = [
-            {"label": "Profile"},
-            {"label": "My kids"},
-            {"label": "My portfolios"},
-            {"label": "My classrrom"},
-            {"label": "About"},
-            {"label": "Logout"},
-        ]
         
+        context["user_menu"] = MenuItem("user")\
+                .setLabel(self.request.user.username)\
+                .setTarget("")\
+                .setSubmenu([
+                    MenuItem("profile").setLabel("Profile"),
+                    MenuItem("children").setLabel("My kids"),
+                    MenuItem("portfolios").setLabel("My portfolios"),
+                    MenuItem("classroom").setLabel("My classroom"),
+                    MenuItem("about").setLabel("About"),
+                    MenuItem("logout").setLabel("Logout"),
+                ]).getMap()
+        
+#         context["user_menu"] = [
+#             {"label": "Profile"},
+#             {"label": "My kids"},
+#             {"label": "My portfolios"},
+#             {"label": "My classroom"},
+#             {"label": "About"},
+#             {"label": "Logout"},
+#         ]
+#         
         context["context_panel"] = {
             "label": "Portfolio",
             "context_menu": [
@@ -81,35 +95,27 @@ class IndexView(TemplateView):
         ]
         
         context["user_data"] = {
-            "label": "User name",
+            "label": self.request.user.username,
         }
                     
         return context
 
 
-class HomeView(TemplateView):
+class HomeView(LoginRequiredMixin, TemplateView):
     '''
     Home view
     '''
 
     template_name = "core/home.html"
+    raise_exception = True
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
         
         return context
 
-
-
-def login(request):
-    '''
-    Login view
-    '''
     
-    return HttpResponse("login")
-    
-    
-class KindergartenView(ListView):
+class KindergartenView(LoginRequiredMixin, ListView):
     '''
     Kindergarten view
     '''
@@ -117,6 +123,7 @@ class KindergartenView(ListView):
     model = Kindergarten
     context_object_name = "kindergartens"
     template_name = "core/kindergarten_list.html"
+    raise_exception = True 
     
 #     def get_context_data(self, **kwargs):
 #         context = super(KindergartenView, self).get_context_data(**kwargs)

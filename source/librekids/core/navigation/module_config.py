@@ -13,10 +13,18 @@ class ModuleConfig(AppConfig):
     
     @staticmethod
     def getMainMenu():
+        '''
+        @return: the main menu for this module
+        '''
+        
         return []
     
     @staticmethod
-    def getContextMenu():
+    def getContextMenuSets():
+        '''
+        @return: menu item sets
+        '''
+        
         return []
     
     @staticmethod

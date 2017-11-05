@@ -26,16 +26,35 @@
     	<i class="fa fa-bars"></i>
 	</span>
     <div class="w3-container">    	
-    	<div id="lk-user-menu" class="w3-margin-right w3-display-topright">  	
-			{% if user_data %}				
-				<i class="fa fa-user fa-fw w3-margin-right-small"></i>
-				<span class="w3-small">{{ user_data.label }}</span>
+    	<div id="lk-user-menu" class="lk-menu w3-margin-right w3-display-topright">
+    	
+    		{% if user_menu %}
+	    		<div id="lk-main-menu-item-{{ user_menu.name }}"
+		    		class="w3-button w3-dark-marine w3-hover-marine w3-margin-bottom-small lk-menu-item lk-button" 
+		    		data-name="{{ user_menu.name }}"						 
+					data-target="{{ menu_item.target | default_if_none:"" }}">
+					<span>						
+						<i class="fa fa-user fa-fw w3-margin-right-small"></i>
+						<span class="w3-hide-small">{{ user_menu.label }}</span>										
+					</span>				
+					
+					<span class="lk-main-menu-item-more">
+						<i class="fa fa-caret-square-o-down fa-lg"></i>
+						<div id="lk-main-menu-item-{{ user_menu.name }}-submenu"
+							class="lk-main-menu-submenu">
+							{% for submenu_item in user_menu.menu %}
+								<span 
+									id="lk-main-menu-item-user-{{ submenu_item.name }}"
+									class="lk-menu-item lk-main-menu-subitem w3-hover-marine w3-padding"
+									data-name="{{ user_menu.name }}.{{ submenu_item.name }}">
+									{{ submenu_item.label }}
+								</span>					
+							{% endfor %}
+						</div>
+					</span>
+				
+				</div>
 			{% endif %}
-			<ul style="display: none">
-				{% for menu_item in user_menu %}
-					<li>{{ menu_item.label }}</li>
-				{% endfor %}					
-			</ul>
 	    </div>
         
 	    <div class="w3-margin-top-small">
@@ -59,7 +78,7 @@
 								<span 
 									id="lk-main-menu-item-{{ menu_item.name }}-{{ submenu_item.name }}"
 									class="lk-menu-item lk-main-menu-subitem w3-hover-marine w3-padding"
-									data-name="{{ submenu_item.name }}">
+									data-name="{{ menu_item.name }}.{{ submenu_item.name }}">
 									{{ submenu_item.label }}
 								</span>					
 							{% endfor %}
@@ -70,7 +89,7 @@
 			{% endfor %}			
 		    </div>
 		    
-		    <div class="w3-topbar w3-border-white w3-small">
+		    <div class="w3-topbar-medium w3-border-white w3-small">
 			    {% if breadcrumbs %}		    	
 					<div id="lk-breadcrumbs" class="w3-left">
 						<span data-name="{{ breadcrumbs.0.label }}"><i class="fa fa-home"></i></span>		

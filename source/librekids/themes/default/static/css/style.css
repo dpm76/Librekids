@@ -16,6 +16,11 @@ body {
   min-height: 100%;
 }
 
+.lk-text-logo
+{
+	font-family: "Baloo Thambi", cursive;
+}
+
 #lk-body-footer
 {
 	position: absolute;
