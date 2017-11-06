@@ -15,13 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.contrib.auth import views as authViews
+from django.contrib.auth.views import LoginView, LogoutView
 
 from librekids.core.views import IndexView
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),
-    url(r'^login/', authViews.LoginView.as_view(template_name="login.html"), name="login"),
+    url(r'^login/', LoginView.as_view(template_name="login.html"), name="login"),
+    url(r'^logout/', LogoutView.as_view(next_page="/"), name="logout"),
     url(r'^admin/', admin.site.urls),    
     url(r'^core/', include('librekids.core.urls')),
     url(r'^messaging/', include('librekids.messaging.urls')),

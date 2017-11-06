@@ -31,7 +31,9 @@
     		{% if user_menu %}
 	    		<div id="lk-main-menu-item-{{ user_menu.name }}"
 		    		class="w3-button w3-dark-marine w3-hover-marine w3-margin-bottom-small lk-menu-item lk-button" 
-		    		data-name="{{ user_menu.name }}"						 
+		    		data-name="{{ user_menu.name }}"
+		    		data-is-redirect="{{ submenu_item.is_redirect | lower  }}"
+					data-on-new-tab="{{ submenu_item.on_new_tab | lower }}"						 
 					data-target="{{ menu_item.target | default_if_none:"" }}">
 					<span>						
 						<i class="fa fa-user fa-fw w3-margin-right-small"></i>
@@ -46,7 +48,10 @@
 								<span 
 									id="lk-main-menu-item-user-{{ submenu_item.name }}"
 									class="lk-menu-item lk-main-menu-subitem w3-hover-marine w3-padding"
-									data-name="{{ user_menu.name }}.{{ submenu_item.name }}">
+									data-target="{{ submenu_item.target | default_if_none:"" }}"
+									data-is-redirect="{{ submenu_item.is_redirect | lower }}"
+									data-on-new-tab="{{ submenu_item.on_new_tab | lower }}"
+									data-name="{{ submenu_item.name }}">
 									{{ submenu_item.label }}
 								</span>					
 							{% endfor %}
@@ -63,7 +68,9 @@
 		    	<div id="lk-main-menu-item-{{ menu_item.name }}"
 		    		class="w3-button w3-dark-marine
 						 w3-hover-marine w3-margin-bottom-small
-						 lk-menu-item lk-button" data-name="{{ menu_item.name }}"						 
+						 lk-menu-item lk-button" data-name="{{ menu_item.name }}"
+						 data-is-redirect="{{ submenu_item.is_redirect | lower }}"
+						 data-on-new-tab="{{ submenu_item.on_new_tab | lower }}"						 
 						 data-target="{{ menu_item.target | default_if_none:"" }}">
 					<span>
 						<span class="lk-main-menu-item-icon w3-medium"></span>
@@ -78,7 +85,10 @@
 								<span 
 									id="lk-main-menu-item-{{ menu_item.name }}-{{ submenu_item.name }}"
 									class="lk-menu-item lk-main-menu-subitem w3-hover-marine w3-padding"
-									data-name="{{ menu_item.name }}.{{ submenu_item.name }}">
+									data-target="{{ submenu_item.target | default_if_none:"" }}"
+									data-is-redirect="{{ submenu_item.is_redirect | lower }}"
+									data-on-new-tab="{{ submenu_item.on_new_tab | lower }}"
+									data-name="{{ submenu_item.name }}">
 									{{ submenu_item.label }}
 								</span>					
 							{% endfor %}

@@ -13,10 +13,54 @@ lk.core.selectedMenuItemClasses = "w3-indigo";
  */
 lk.core.unselectedMenuItemClasses = "w3-dark-marine";
 
+lk.core.followMenuItem = function(menuItem)
+{
+	/**
+	 * Loads the menu-item's target
+	 * 
+	 * @param menuItem: The menu-item as a jquery object
+	 */
+
+	var isRedirect = menuItem.attr("data-is-redirect") == "true";
+	
+	if(isRedirect)
+	{
+		lk.core.redirect(menuItem);
+	}else
+	{	
+		var viewName = menuItem.attr("data-name");
+		lk.core.loadView(viewName);
+	}
+
+};
+
+lk.core.redirect = function(menuItem)
+{
+	/**
+	 * Loads the menu-item's target
+	 * 
+	 * @param menuItem: The menu-item as a jquery object
+	 */
+	
+	var onNewTab = menuItem.attr("data-on-new-tab") == "true";
+	var target = $(menuItem).attr("data-target");
+	
+	if(onNewTab)
+	{
+		window.open(target, "_blank");
+	}else
+	{
+		window.location.href = target;
+	}
+
+};
+
 lk.core.loadView = function(viewName)
 {
 	/**
-	 * Loads a view into content area
+	 * Loads a view into the main panel (#lk-main-panel)
+	 * 
+	 * @param viewName: Name of the view to be loaded
 	 */
 	
 	//Select related menu item
@@ -56,8 +100,7 @@ lk.core.init = function()
 		 * Opens the view related to the clicked menu item 
 		 */
 		
-		var viewName = $(this).attr("data-name");
-		lk.core.loadView(viewName);
+		lk.core.followMenuItem($(this));
 		
 	}).mouseenter(function()
 	{

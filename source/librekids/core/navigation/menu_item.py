@@ -19,6 +19,8 @@ class MenuItem(object):
         self._name = name
         self._label = None
         self._target = None
+        self._isRedirect = False
+        self._onNewTab = False
         self._subMenu = []
         
     
@@ -44,13 +46,37 @@ class MenuItem(object):
         return self
     
     
-    def setTarget(self, target):
+    def setTarget(self, target, isRedirect=False, onNewTab=False):
         '''
         Set the target
-        @param target: menu-item target
+        @param target: menu-item target        
         '''
         
         self._target = target
+        
+        return self
+    
+    def isRedirect(self, isRedirect=True):
+        '''
+        Indicates whether the target is a redirect
+        @param isRedirect: The browser redirects to the target. Otherwise, the response will be 
+        displayed within the content section.
+        '''
+    
+        self._isRedirect = isRedirect
+        
+        return self
+        
+        
+    def onNewTab(self, onNewTab=True):
+        '''
+        Indicates whether the target shall be displayed on a new tab.
+        It works with redirection targets only. Otherwise it will be ignored.
+        @param onNewTab: The redirected page will be displayed on new tab. This works on 
+        redirections only.
+        '''
+        
+        self._onNewTab = onNewTab
         
         return self
     
@@ -98,16 +124,20 @@ class MenuItem(object):
         return self._subMenu
     
     
-    def getMap(self):
+    def getMap(self, parentPath=""):
         '''
         Returns the object data as a map object
         '''
         
+        itemPath = "{0}.{1}".format(parentPath,self._name) if parentPath != "" else self._name
+        
         mapObject = {
             "label": self._label, 
-            "name": self._name,
+            "name": itemPath,
             "target": self._target,
-            "menu": [menuItem.getMap() for menuItem in self._subMenu]
+            "is_redirect": self._isRedirect,
+            "on_new_tab": self._onNewTab,
+            "menu": [menuItem.getMap(itemPath) for menuItem in self._subMenu]
         }
         
         return mapObject

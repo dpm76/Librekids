@@ -1,3 +1,5 @@
+from django.urls.base import reverse
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import HttpResponse
 from django.shortcuts import render
@@ -44,7 +46,10 @@ class IndexView(LoginRequiredMixin, TemplateView):
                     MenuItem("portfolios").setLabel("My portfolios"),
                     MenuItem("classroom").setLabel("My classroom"),
                     MenuItem("about").setLabel("About"),
-                    MenuItem("logout").setLabel("Logout"),
+                    MenuItem("logout")
+                        .setLabel("Logout")
+                        .setTarget(reverse("logout"))
+                        .isRedirect()                                                
                 ]).getMap()
         
 #         context["user_menu"] = [
