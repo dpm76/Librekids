@@ -141,7 +141,14 @@ class Kindergarten(models.Model):
                                     max_length=15, blank=True)
     name = models.CharField(max_length=50, blank=False)
     company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
-    director = models.ForeignKey(Employee, null=True, blank=True)    
+    director = models.ForeignKey(Employee, null=True, blank=True)
+    
+    def getEmployees(self):
+        
+        classrooms = Classroom.objects.filter(kindergarten__pk = self.pk)
+        employees = Employee.objects.filter(classrooms__in = classrooms).distinct()
+        
+        return employees
 
 
     def __str__(self):
@@ -159,7 +166,7 @@ class Classroom(models.Model):
     '''
     
     name = models.CharField(max_length=50, blank=False)
-    kindergarten = models.ForeignKey(Kindergarten, on_delete=models.CASCADE)
+    kindergarten = models.ForeignKey(Kindergarten, on_delete=models.CASCADE, related_name="classrooms")
     educators = models.ManyToManyField(Employee, related_name="classrooms")
     
     
@@ -177,7 +184,8 @@ class Child(models.Model):
     '''
     
     name=models.CharField(max_length=50, blank=False)
-    classroom = models.ForeignKey(Classroom, null=True, blank=True, on_delete = models.SET_NULL, related_name="children")
+    classroom = models.ForeignKey(Classroom, null=True, blank=True, on_delete = models.SET_NULL,\
+                                   related_name="children")
     educator = models.ForeignKey(Employee, null=True, blank=True, on_delete=models.SET_NULL)
     parents = models.ManyToManyField(Parent, related_name="children")
     join_date = models.DateField(null=True, blank=True)

@@ -1,7 +1,43 @@
-<h3>Kindergarten</h3>
-
 <ul>
 {% for kindergarten in kindergartens %}
-	<li>{{ kindergarten.name }}</li>
+	<li>
+		<h1>{{ kindergarten.name }}</h1>
+		<div>Director: {{ kindergarten.director.user.username }}</div>
+		<ul>
+			<li>
+				<h2>Classrooms</h2>
+				<ul>
+				{% for classroom in kindergarten.classrooms.all %}
+					<li>
+						<h3>{{ classroom.name }}</h3>							
+						<ul>
+						{% for child in classroom.children.all %}
+							<li>
+								<div>{{ child.name }}</div>
+								<div>Educator: {{ child.educator.user.username }}</div>
+								<div>Parents:</div>
+								<ul>
+								{% for parent in child.parents.all %}
+									<li>{{ parent.user.username }}</li>
+								{% endfor %}
+								</ul>
+							</li>
+							
+						{% endfor %}
+						</ul>						
+					</li>				
+				{% endfor %}
+				</ul>
+			</li>
+			<li>
+				<h2>Employees</h2>
+				<ul>
+				{% for employee in kindergarten.getEmployees %}
+					<li>{{ employee.user.username }}</li>
+				{% endfor %}
+				</ul>
+			</li>
+		</ul>
+	</li>	
 {% endfor %}
 </ul>
