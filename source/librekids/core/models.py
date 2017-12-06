@@ -58,36 +58,60 @@ class AuthorisedPerson(models.Model):
         return self.name
 
 
+class Profile(models.Model):
+    '''
+    Generic profile for users
+    '''
 
-class Parent(AuthorisedPerson):
-    '''
-    Mother or father or any relative of children  
-    '''
-    
-    pass
-    
-
-class Employee(models.Model):
-    '''
-    Company's employee
-    '''
-    
-    name=models.CharField(max_length=50)
-    position = models.CharField(max_length=50, blank=True)
-    supervisor = models.ForeignKey('self', null=True, blank=True, related_name="supervisor_of")
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(validators=[PhoneValidator.getInstance()], 
                                     max_length=15, blank=True)
     mobile_number = models.CharField(validators=[PhoneValidator.getInstance()], 
                                      max_length=15, blank=True)
-    email = models.EmailField(blank=True)
+    
+    def save(self, force_insert=False, force_update=False, using=None, 
+        update_fields=None):
+        '''
+        Overrides save method creating and saving the related user
+        '''
+
+        if not self.user:
+            user = User.objects.create()
+            self.user = user
+            
+        self.user.save() 
+        
+        return models.Model.save(self, force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
     
     def __str__(self):
         '''
         Simple serialization
         '''
         
-        return self.name
+        return self.user.username
 
+
+class Parent(Profile):
+    '''
+    Mother or father or any relative of children  
+    '''    
+        
+    address_primary = models.TextField(blank=True)
+    address_secondary = models.TextField(blank=True)    
+    work_number = models.CharField(validators=[PhoneValidator.getInstance()], 
+                                    max_length=15, blank=True)
+        
+
+class Employee(Profile):
+    '''
+    Company's employee
+    '''
+    
+    position = models.CharField(max_length=50, blank=True)
+    supervisor = models.ForeignKey('self', null=True, blank=True, related_name="supervisor_of")
+    join_date = models.DateField(null=True, blank=True)
+    leave_date = models.DateField(null=True, blank=True)    
+    
 
 class Company(models.Model):
     '''
@@ -136,6 +160,7 @@ class Classroom(models.Model):
     
     name = models.CharField(max_length=50, blank=False)
     kindergarten = models.ForeignKey(Kindergarten, on_delete=models.CASCADE)
+    educators = models.ManyToManyField(Employee, related_name="classrooms")
     
     
     def __str__(self):
@@ -146,23 +171,17 @@ class Classroom(models.Model):
         return self.name
 
 
-
-class Educator(Employee):
-    '''
-    Educator
-    '''
-    
-    main_classroom = models.ForeignKey(Classroom)
-
-
 class Child(models.Model):
     '''
     Every single child
     '''
     
     name=models.CharField(max_length=50, blank=False)
-    educator = models.ForeignKey(Educator, null=True, blank=True, on_delete=models.SET_NULL)
-    parents = models.ManyToManyField(Parent)
+    classroom = models.ForeignKey(Classroom, null=True, blank=True, on_delete = models.SET_NULL, related_name="children")
+    educator = models.ForeignKey(Employee, null=True, blank=True, on_delete=models.SET_NULL)
+    parents = models.ManyToManyField(Parent, related_name="children")
+    join_date = models.DateField(null=True, blank=True)
+    leave_date = models.DateField(null=True, blank=True) 
     
     
     def __str__(self):
