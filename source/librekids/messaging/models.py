@@ -8,7 +8,7 @@ class Message(models.Model):
     System messages uses the admin user account 
     '''
     
-    from_user = models.ForeignKey(User, null=False)    
+    from_user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)    
     content_text = models.TextField(blank=False)
     creation_time = models.DateTimeField(null=False)
     delivery_time = models.DateTimeField(null=True)

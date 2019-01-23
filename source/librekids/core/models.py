@@ -108,7 +108,7 @@ class Employee(Profile):
     '''
     
     position = models.CharField(max_length=50, blank=True)
-    supervisor = models.ForeignKey('self', null=True, blank=True, related_name="supervisor_of")
+    supervisor = models.ForeignKey('self', null=True, blank=True, related_name="supervisor_of", on_delete=models.SET_NULL)
     join_date = models.DateField(null=True, blank=True)
     leave_date = models.DateField(null=True, blank=True)    
     
@@ -120,7 +120,7 @@ class Company(models.Model):
     
     name = models.CharField(max_length=50, blank=False)
     address = models.TextField(blank=True)
-    owner = models.ForeignKey(Employee, null=True, blank=True)
+    owner = models.ForeignKey(Employee, null=True, blank=True, on_delete=models.SET_NULL)
     
 
     def __str__(self):
@@ -141,7 +141,7 @@ class Kindergarten(models.Model):
                                     max_length=15, blank=True)
     name = models.CharField(max_length=50, blank=False)
     company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE)
-    director = models.ForeignKey(Employee, null=True, blank=True)
+    director = models.ForeignKey(Employee, null=True, blank=True, on_delete=models.SET_NULL)
     
     def getEmployees(self):
         
@@ -220,7 +220,7 @@ class ActivityStreamEntry(models.Model):
     Stream notification
     '''
     
-    actor = models.ForeignKey(User)
+    actor = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     object_type = models.ForeignKey(ContentType, null=False, blank=False, on_delete=models.CASCADE, 
                                     related_name="activity_stream_entry_as_object_type")
     object_id = models.PositiveIntegerField()
