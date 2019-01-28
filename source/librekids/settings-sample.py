@@ -85,13 +85,15 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'HOST': 'localhost',
-        'NAME': 'librekids_dev',
-        'USER': 'david',
+        #'PORT': '5432', # default value use to work
+        'NAME': 'mydatabasename',
+        'USER': 'myuser',
+        'PASSWORD': 'mypassword',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             #Default MySQL socket is at '/var/run/mysqld/mysqld.sock'
             #Lammp's MariaDB socket is at '/opt/lampp/var/mysql/mysql.sock'
-            #Modify or comment it as necessary
+            #Modify or uncomment it as necessary
             #'unix_socket' : '/opt/lampp/var/mysql/mysql.sock',
         },
     }

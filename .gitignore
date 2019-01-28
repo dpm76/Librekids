@@ -1,6 +1,9 @@
 #Ignore development's virtualenv directory
 runenv/
 
+#Local settings. Rename or copy the files settings-sample.py first.
+source/librekids/settings.py
+
 ############################################################################
 # Python gitignore-file from                                               #
 # https://github.com/github/gitignore/blob/master/Python.gitignore         #
