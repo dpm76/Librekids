@@ -68,6 +68,7 @@ class Profile(models.Model):
                                     max_length=15, blank=True)
     mobile_number = models.CharField(validators=[PhoneValidator.getInstance()], 
                                      max_length=15, blank=True)
+    email = models.EmailField(blank=True)
     
     def save(self, force_insert=False, force_update=False, using=None, 
         update_fields=None):
